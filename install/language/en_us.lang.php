@@ -90,7 +90,6 @@ $mod_strings = array(
     'ERR_CHECKSYS_SESSION_SAVE_PATH_NOT_SET'       => 'The session.save_path setting in your php configuration file (php.ini) is not set or is set to a folder which did not exist. You might need to set the save_path setting in php.ini or verify that the folder sets in save_path exist.',
     'ERR_CHECKSYS_SESSION_SAVE_PATH_NOT_WRITABLE'  => 'The session.save_path setting in your php configuration file (php.ini) is set to a folder which is not writeable.  Please take the necessary steps to make the folder writeable.  <br>Depending on your Operating system, this might require you to change the permissions by running chmod 766, or to right click on the filename to access the properties and uncheck the read only option.',
     'ERR_CHECKSYS_CONFIG_NOT_WRITABLE'  => 'The config file exists but is not writeable.  Please take the necessary steps to make the file writeable.  Depending on your Operating system, this might require you to change the permissions by running chmod 766, or to right click on the filename to access the properties and uncheck the read only option.',
-    'ERR_CHECKSYS_CONFIG_OVERRIDE_NOT_WRITABLE'  => 'The config override file exists but is not writeable.  Please take the necessary steps to make the file writeable.  Depending on your Operating system, this might require you to change the permissions by running chmod 766, or to right click on the filename to access the properties and uncheck the read only option.',
     'ERR_CHECKSYS_CUSTOM_NOT_WRITABLE'  => 'The Custom Directory exists but is not writeable.  You may have to change permissions on it (chmod 766) or right click on it and uncheck the read only option, depending on your Operating System.  Please take the needed steps to make the file writeable.',
     'ERR_CHECKSYS_FILES_NOT_WRITABLE'   => "The files or directories listed below are not writeable or are missing and cannot be created.  Depending on your Operating System, correcting this may require you to change permissions on the files or parent directory (chmod 755), or to right click on the parent directory and uncheck the 'read only' option and apply it to all subfolders.",
 	//'ERR_CHECKSYS_SAFE_MODE'			=> 'Safe Mode is On (please disable in php.ini)',
@@ -111,6 +110,7 @@ $mod_strings = array(
 	'ERR_DB_LOGIN_FAILURE_MYSQL'		=> 'The provided database host, username, and/or password is invalid, and a connection to the database could not be established.  Please enter a valid host, username and password',
 	'ERR_DB_LOGIN_FAILURE_MSSQL'		=> 'The provided database host, username, and/or password is invalid, and a connection to the database could not be established.  Please enter a valid host, username and password',
 	'ERR_DB_MYSQL_VERSION'				=> 'Your MySQL version (%s) is not supported by SuiteCRM.  You will need to install a version that is compatible with the SuiteCRM application.  Please consult the Compatibility Matrix in the Release Notes for supported MySQL versions.',
+	'ERR_DB_PGSQL_VERSION'				=> 'Your PostgreSQL version (%s) is not supported by SuiteCRM.  You will need to install a version that is compatible with the SuiteCRM application.  Please consult the Compatibility Matrix in the Release Notes for supported PostgreSQL versions.',
 	'ERR_DB_NAME'						=> 'Database name cannot be blank.',
 	'ERR_DB_NAME2'						=> "Database name cannot contain a '\\', '/', or '.'",
     'ERR_DB_MYSQL_DB_NAME_INVALID'      => "Database name cannot contain a '\\', '/', or '.'",
@@ -346,6 +346,7 @@ $mod_strings = array(
 	'LBL_MYSQL'							=> 'MySQL',
     'LBL_MYSQLI'						=> 'MySQL (mysqli extension)',
 	'LBL_IBM_DB2'						=> 'IBM DB2',
+	'LBL_PGSQL'							=> 'PostgreSQL',
 	'LBL_NEXT'							=> 'Next',
 	'LBL_NO'							=> 'No',
     'LBL_ORACLE'						=> 'Oracle',
@@ -438,7 +439,7 @@ $mod_strings = array(
                     'Before you begin, please be sure that you have the supported versions of the following system
                       components:<br>
                       <ul>
-                      <li> Database/Database Management System (Examples: MariaDB, MySQL or SQL Server)</li>
+                      <li> Database/Database Management System (Examples: MariaDB, MySQL, SQL Server or PostgreSQL)</li>
                       <li> Web Server (Apache, IIS)</li>
                       </ul>
                       Consult the Compatibility Matrix in the Release Notes for
@@ -455,8 +456,7 @@ $mod_strings = array(
                                         <li><b>Session Variables</b> &#8211; must be working properly</li>
                                             <li> <b>MB Strings</b> &#8211; must be installed and enabled in php.ini</li>
 
-                      <li> <b>Database Support</b> &#8211; must exist for MariaDB, MySQL or SQL Server</li>
-
+                      <li> <b>Database Support</b> &#8211; must exist for MariaDB, MySQL,SQL Server or PostgreSQL</li>
                       <li> <b>Config.php</b> &#8211; must exist and must have the appropriate
                                   permissions to make it writeable</li>
 					  <li>The following SuiteCRM files must be writeable:<ul><li><b>/custom</li>
@@ -474,7 +474,7 @@ $mod_strings = array(
                       For both <b>Typical</b> and <b>Custom</b> installations, you will need to know the following:<br>
                       <ul>
                       <li> <b>Type of database</b> that will house the SuiteCRM data <ul><li>Compatible database
-                      types: MariaDB, MySQL or SQL Server.<br><br></li></ul></li>
+                      types: MariaDB, MySQL, SQL Server or PostgreSQL.<br><br></li></ul></li>
                       <li> <b>Name of the web server</b> or machine (host) on which the database is located
                       <ul><li>This may be <i>localhost</i> if the database is on your local computer or is on the same web server or machine as your SuiteCRM files.<br><br></li></ul></li>
                       <li><b>Name of the database</b> that you would like to use to house the SuiteCRM data</li>
@@ -528,7 +528,6 @@ $mod_strings = array(
     'LBL_OOTB_CAMPAIGN'		=> 'Run Nightly Mass Email Campaigns',
 	'LBL_OOTB_PRUNE'		=> 'Prune Database on 1st of Month',
     'LBL_OOTB_TRACKER'		=> 'Prune tracker tables',
-    'LBL_OOTB_SEND_EMAIL_REMINDERS'	=> 'Run Email Reminder Notifications',
     'LBL_UPDATE_TRACKER_SESSIONS' => 'Update tracker_sessions table',
     'LBL_OOTB_CLEANUP_QUEUE' => 'Clean Jobs Queue',
     'LBL_OOTB_REMOVE_DOCUMENTS_FROM_FS' => 'Removal of documents from filesystem',
