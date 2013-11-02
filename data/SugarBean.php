@@ -1055,7 +1055,14 @@ class SugarBean
                 return array_values($this->$field_name->getBeans(new $bean_name(), $sort_array, $begin_index, $end_index, $deleted, $optional_where));
             } else {
                 // Link2 style
-                return array_values($this->$field_name->getBeans());
+                if ($end_index != -1 || !empty($deleted) || !empty($optional_where))
+                    return array_values($this->$field_name->getBeans(array(
+                        'where' => $optional_where,
+                        'deleted' => $deleted,
+                        'limit' => ($end_index - $begin_index)
+                    )));
+                else
+                    return array_values($this->$field_name->getBeans());
             }
         }
         else
@@ -1315,21 +1322,14 @@ class SugarBean
             if(isset($def['dbType']))
                 $type .= $def['dbType'];
 
-            if((strpos($type, 'char') !== false ||
+            if($def['type'] == 'html') {
+                $this->$key = SugarCleaner::cleanHtml($this->$key, true);
+            } elseif((strpos($type, 'char') !== false ||
                 strpos($type, 'text') !== false ||
                 $type == 'enum') &&
                 !empty($this->$key)
             ) {
-                $str = from_html($this->$key);
-                // Julian's XSS cleaner
-                $potentials = clean_xss($str, false);
-
-                if(is_array($potentials) && !empty($potentials)) {
-                    foreach($potentials as $bad) {
-                        $str = str_replace($bad, "", $str);
-                    }
-                    $this->$key = to_html($str);
-                }
+                $this->$key = SugarCleaner::cleanHtml($this->$key);
             }
         }
     }
@@ -1567,7 +1567,7 @@ class SugarBean
                 $notify_mail->From = $admin->settings['notify_fromaddress'];
                 $notify_mail->FromName = (empty($admin->settings['notify_fromname'])) ? "" : $admin->settings['notify_fromname'];
             } else {
-                // Send notifications from the current user's e-mail (ifset)
+                // Send notifications from the current user's e-mail (if set)
                 $fromAddress = $current_user->emailAddress->getReplyToAddress($current_user);
                 $fromAddress = !empty($fromAddress) ? $fromAddress : $admin->settings['notify_fromaddress'];
                 $notify_mail->From = $fromAddress;
@@ -2467,7 +2467,7 @@ class SugarBean
         //sub-selects.
         if (strstr($query," UNION ALL ") !== false) {
 
-            //seperate out all the queries.
+            //separate out all the queries.
             $union_qs=explode(" UNION ALL ", $query);
             foreach ($union_qs as $key=>$union_query) {
                 $star = '*';
@@ -3175,7 +3175,7 @@ class SugarBean
         $ret_array['secondary_from'] = $ret_array['from'] ;
         $ret_array['where'] = '';
         $ret_array['order_by'] = '';
-        //secondary selects are selects that need to be run after the primarty query to retrieve additional info on main
+        //secondary selects are selects that need to be run after the primary query to retrieve additional info on main
         if($singleSelect)
         {
             $ret_array['secondary_select']=& $ret_array['select'];
@@ -3259,7 +3259,7 @@ class SugarBean
                     if ( isset($filter[$field]['force_default']) )
                         $ret_array['select'] .= ", {$filter[$field]['force_default']} $field ";
                     else
-                    //spaces are a fix for length issue problem with unions.  The union only returns the maximum number of characters from the first select statemtn.
+                    //spaces are a fix for length issue problem with unions.  The union only returns the maximum number of characters from the first select statement.
                         $ret_array['select'] .= ", '                                                                                                                                                                                                                                                              ' $field ";
                 }
                 continue;
@@ -3392,7 +3392,7 @@ class SugarBean
                     $rel_module = $this->$data['link']->getRelatedModuleName();
                     $table_joined = !empty($joined_tables[$params['join_table_alias']]) || (!empty($joined_tables[$params['join_table_link_alias']]) && isset($data['link_type']) && $data['link_type'] == 'relationship_info');
 
-					//if rnanme is set to 'name', and bean files exist, then check if field should be a concatenated name
+					//if rname is set to 'name', and bean files exist, then check if field should be a concatenated name
 					global $beanFiles, $beanList;
 					if($data['rname'] && !empty($beanFiles[$beanList[$rel_module]])) {
 
@@ -3633,7 +3633,7 @@ class SugarBean
                 {
                     if(empty($templates[$child_info['parent_type']]))
                     {
-                        //Test emails will have an invalid parent_type, don't try to load the non-existant parent bean
+                        //Test emails will have an invalid parent_type, don't try to load the non-existent parent bean
                         if ($child_info['parent_type'] == 'test') {
                             continue;
                         }
@@ -4403,8 +4403,10 @@ class SugarBean
         global $fill_in_rel_depth;
         if(empty($fill_in_rel_depth) || $fill_in_rel_depth < 0)
             $fill_in_rel_depth = 0;
+
         if($fill_in_rel_depth > 1)
             return;
+
         $fill_in_rel_depth++;
 
         foreach($this->field_defs as $field)
@@ -4417,7 +4419,9 @@ class SugarBean
                     // set the value of this relate field in this bean ($this->$field['name']) to the value of the 'name' field in the related module for the record identified by the value of $this->$field['id_name']
                     $related_module = $field['module'];
                     $id_name = $field['id_name'];
-                    if (empty($this->$id_name)){
+
+                    if (empty($this->$id_name))
+                    {
                        $this->fill_in_link_field($id_name, $field);
                     }
                     if(!empty($this->$id_name) && ( $this->object_name != $related_module || ( $this->object_name == $related_module && $this->$id_name != $this->id ))){
@@ -4847,7 +4851,7 @@ class SugarBean
   }
 
     /**
-     * Constructs an comma seperated list of ids from passed query results.
+     * Constructs an comma separated list of ids from passed query results.
      *
      * @param string @query query to be executed.
      *
@@ -5041,7 +5045,7 @@ class SugarBean
         $query = "SELECT $this->table_name.*". $custom_join['select']. " FROM $this->table_name " . $custom_join['join'];
         $query .= " $where_clause";
         $GLOBALS['log']->debug("Retrieve $this->object_name: ".$query);
-        //requireSingleResult has beeen deprecated.
+        //requireSingleResult has been deprecated.
         //$result = $this->db->requireSingleResult($query, true, "Retrieving record $where_clause:");
         $result = $this->db->limitQuery($query,0,1,true, "Retrieving record $where_clause:");
 
@@ -5116,10 +5120,10 @@ class SugarBean
             return '';
         }
 
-		
+        
         /**
-         * Add "as" SQL Key for PostgreSQL
-         */
+        * Add "as" SQL Key for PostgreSQL
+        */
         if(isset($GLOBALS['dictionary'][$object]['fields']['assigned_user_id']))
         {
             $query .= " , ".	$table  . ".assigned_user_id as owner";
@@ -5503,6 +5507,7 @@ class SugarBean
         return true;
     }
 
+
     /* END - SECURITY GROUPS */
 
     /**
@@ -5524,7 +5529,6 @@ class SugarBean
 
         return '';
     }
-
 
     /**
     * Returns true of false if the user_id passed is the owner
@@ -5907,7 +5911,7 @@ class SugarBean
 
     /**
      * This function is designed to cache references to field arrays that were previously stored in the
-     * bean files and have since been moved to seperate files. Was previously in include/CacheHandler.php
+     * bean files and have since been moved to separate files. Was previously in include/CacheHandler.php
      *
      * @deprecated
      * @param $module_dir string the module directory
