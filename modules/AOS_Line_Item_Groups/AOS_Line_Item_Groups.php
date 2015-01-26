@@ -24,9 +24,6 @@
  * @author Salesagility Ltd <support@salesagility.com>
  */
 
-/**
- * THIS CLASS IS FOR DEVELOPERS TO MAKE CUSTOMIZATIONS IN
- */
 require_once('modules/AOS_Line_Item_Groups/AOS_Line_Item_Groups_sugar.php');
 class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar {
 	
@@ -37,7 +34,7 @@ class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar {
 	function save_groups($post_data, $parent, $key = ''){
 	
 		$groups = array();
-        $group_count = count($post_data[$key.'group_number']);
+        $group_count = isset($post_data[$key.'group_number']) ? count($post_data[$key.'group_number']) : 0;
         $j = 0;
 		for ($i = 0; $i < $group_count; ++$i) {
 		
@@ -52,9 +49,11 @@ class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar {
 				}
                 $product_quote_group->number = ++$j;
                 $product_quote_group->assigned_user_id = $parent->assigned_user_id;
+                $product_quote_group->currency_id = $parent->currency_id;
                 $product_quote_group->parent_id = $parent->id;
                 $product_quote_group->parent_type = $parent->object_name;
 				$product_quote_group->save();
+                $post_data[$key.'id'][$i] = $product_quote_group->id;
 
                 if(isset($post_data[$key.'group_number'][$i])){
                     $groups[$post_data[$key.'group_number'][$i]] = $product_quote_group->id;
@@ -68,17 +67,11 @@ class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar {
         $productQuote->save_lines($post_data, $parent, $groups, 'product_');
         $productQuote->save_lines($post_data, $parent, $groups, 'service_');
 	}
-	
-	/*function mark_lines_deleted($parent){
-	
-		require_once('modules/Relationships/Relationship.php');
-		//$key = Relationship::retrieve_by_modules($parent->object_name, $this->object_name, $this->db);
-		//if (!empty($key)) {
-			$product_quotes = $parent->get_linked_beans('aos_products_quotes', $this->object_name);
-			foreach($product_quotes as $product_quote){
-				$product_quote->mark_deleted($product_quote->id);
-			}
-		//}
-	}*/
+
+    function save($check_notify = FALSE){
+        require_once('modules/AOS_Products_Quotes/AOS_Utils.php');
+        perform_aos_save($this);
+        parent::save($check_notify);
+    }
 }
 ?>

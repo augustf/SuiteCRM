@@ -7,14 +7,16 @@ upload/*
 !upload/index.html
 # Ignore some files and directories from the custom directory.
 custom/history/*
+custom/blowfish/*
 custom/modulebuilder/*
 custom/working/*
 custom/modules/*/Ext/
-custom/application/Ext/*
+# Ignore AOD indexes
+modules/AOD_Index/Index/*
 # Custom configuration should also be ignored.
 /config.php
-# The silent upgrade scripts aren't needed.
-silentUpgrade*.php
+# Connector configuration should also be ignored.
+custom/modules/Connectors/connectors/sources/ext/*/*/config.php
 # Logs files can safely be ignored.
 *.log
 ## IDE specific items
@@ -55,4 +57,9 @@ Session.vim
 # Windows
 Thumbs.db
 Desktop.ini
-
+.DS_Store
+.DS_Store?
+# Disytel
+lang_cmp.php
+.kdev4/
+SuiteCRM.kdev4

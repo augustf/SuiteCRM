@@ -20,7 +20,7 @@
  * or write to the Free Software Foundation,Inc., 51 Franklin Street,
  * Fifth Floor, Boston, MA 02110-1301  USA
  *
- * @author Salesagility Ltd <support@salesagility.com>
+ * @author Salesagility Ltd <info@salesagility.com>
  */
 
 $app_list_strings['call_reschedule_dom'][''] = '';
@@ -37,5 +37,4 @@ $app_strings['LBL_RESCHEDULE_ERROR2'] = 'Please select a reason';
 $app_strings['LBL_RESCHEDULE_PANEL'] = 'Reschedule';
 $app_strings['LBL_RESCHEDULE_HISTORY'] = 'Call attempt history';
 $app_strings['LBL_RESCHEDULE_COUNT'] = 'Call Attempts';
-
 

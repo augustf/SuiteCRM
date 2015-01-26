@@ -3,7 +3,7 @@
  * Advanced OpenWorkflow, Automating SugarCRM.
  * @package Advanced OpenWorkflow for SugarCRM
  * @copyright SalesAgility Ltd http://www.salesagility.com
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -50,8 +50,10 @@ $app_list_strings['aow_condition_operator_list']['OR'] = 'OR';
 $app_list_strings['aow_condition_operator_list']['OR'] = 'OR';
 $app_list_strings['aow_condition_type_list']['Value'] = 'Value';
 $app_list_strings['aow_condition_type_list']['Field'] = 'Field';
+$app_list_strings['aow_condition_type_list']['Any_Change'] = 'Any Change';
+$app_list_strings['aow_condition_type_list']['SecurityGroup'] = 'In SecurityGroup';
 $app_list_strings['aow_condition_type_list']['Date'] = 'Date';
-$app_list_strings['aow_condition_type_list']['Multi'] = 'Multiple';
+$app_list_strings['aow_condition_type_list']['Multi'] = 'One of';
 $app_list_strings['aow_action_type_list']['Value'] = 'Value';
 $app_list_strings['aow_action_type_list']['Field'] = 'Field';
 $app_list_strings['aow_action_type_list']['Date'] = 'Date';
@@ -77,7 +79,16 @@ $app_list_strings['aow_assign_options']['role'] = 'ALL Users in Role';
 $app_list_strings['aow_assign_options']['security_group'] = 'ALL Users in Security Group';
 $app_list_strings['aow_email_type_list']['Email Address'] = 'Email';
 $app_list_strings['aow_email_type_list']['Record Email'] = 'Record Email';
-$app_list_strings['aow_email_type_list']['Specify User'] = 'User';
 $app_list_strings['aow_email_type_list']['Related Field'] = 'Related Field';
+$app_list_strings['aow_email_type_list']['Specify User'] = 'User';
+$app_list_strings['aow_email_type_list']['Users'] = 'Users';
+$app_list_strings['aow_email_to_list']['to'] = 'To';
+$app_list_strings['aow_email_to_list']['cc'] = 'Cc';
+$app_list_strings['aow_email_to_list']['bcc'] = 'Bcc';
+$app_list_strings['aow_run_on_list']['All_Records'] = 'All Records';
+$app_list_strings['aow_run_on_list']['New_Records'] = 'New Records';
+$app_list_strings['aow_run_on_list']['Modified_Records'] = 'Modified Records';
+
+
 
 

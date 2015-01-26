@@ -31,7 +31,7 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar {
 
     function save_lines($post_data, $parent, $groups = array(), $key = ''){
 
-        $line_count = count($post_data[$key.'name']);
+        $line_count = isset($post_data[$key.'name']) ? count($post_data[$key.'name']) : 0;
         $j = 0;
         for ($i = 0; $i < $line_count; ++$i) {
 
@@ -51,8 +51,10 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar {
                     $product_quote->number = ++$j;
                     $product_quote->assigned_user_id = $parent->assigned_user_id;
                     $product_quote->parent_id = $parent->id;
+                    $product_quote->currency_id = $parent->currency_id;
                     $product_quote->parent_type = $parent->object_name;
                     $product_quote->save();
+                    $_POST[$key.'id'][$i] = $product_quote->id;
                 }
             }
         }
@@ -70,5 +72,10 @@ class AOS_Products_Quotes extends AOS_Products_Quotes_sugar {
         //}
     }
 
+    function save($check_notify = FALSE){
+        require_once('modules/AOS_Products_Quotes/AOS_Utils.php');
+        perform_aos_save($this);
+        parent::save($check_notify);
+    }
 }
 ?>

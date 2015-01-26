@@ -46,7 +46,7 @@ class AOR_Field extends Basic {
     var $field;
     var $display;
     var $label;
-    var $function;
+    var $field_function;
     var $sort_by;
     var $sort_order;
     var $group_by;
@@ -58,7 +58,7 @@ class AOR_Field extends Basic {
 
     function save_lines($post_data, $parent, $key = ''){
 
-        require_once('modules/AOR_Reports/aor_utils.php');
+        require_once('modules/AOW_WorkFlow/aow_utils.php');
 
         $line_count = count($post_data[$key.'field']);
         $j = 0;
